@@ -75,7 +75,7 @@ week 2 prompt
 
 Parallels
 
-- ToDoList = WritersClub
+- WritersClub = WritersClub
 - ApplicationUser = ApplicationUser
 - Item = Entry
   - Item.Description = Entry.Content
