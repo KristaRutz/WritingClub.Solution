@@ -1,0 +1,18 @@
+@{
+  Layout = "_Layout";
+}
+
+@using WritersClub.Models;
+@model List<WritersClub.Models.Issue>;
+
+<h1>Categories</h1>
+
+<ul>
+  @foreach(Issue issue in Model)
+  {
+      <li>@Html.ActionLink($"{issue.Prompt}", "Details", new { id = issue.IssueId })</li>
+  }
+</ul>
+
+<p>@Html.ActionLink("Add new issue", "Create")</p>
+<p>@Html.ActionLink("Home", "Index", "Home")</p>
