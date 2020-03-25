@@ -31,14 +31,9 @@ namespace WritersClub.Controllers
       return View(userEntries);
     }
 
-    // public ActionResult Index()
-    // {
-    //   return View(_db.Entries.ToList());
-    // }
-
     public ActionResult Create()
     {
-      ViewBag.IssueId = new SelectList(_db.Issues, "IssueId", "Name");
+      ViewBag.IssueId = new SelectList(_db.Issues, "IssueId", "Prompt");
       return View();
     }
 
@@ -54,76 +49,43 @@ namespace WritersClub.Controllers
       return RedirectToAction("Index");
     }
 
-    // public ActionResult Details(int id)
-    // {
-    //   Entry thisEntry = _db.Entries
-    //     .Include(entry => entry.Categories)
-    //     .ThenInclude(join => join.Category)
-    //     .FirstOrDefault(entries => entries.EntryId == id);
-    //   // FirstOrDefault() uses a lambda. We can read this as: start by looking at db.Entries (our entries table), then find any entries where the EntryId of an entry is equal to the id we've passed into this method.
-    //   return View(thisEntry);
-    // }
+    public ActionResult Details(int id)
+    {
+      Entry thisEntry = _db.Entries
+        .Include(entry => entry.User)
+        .Include(entry => entry.Issue)
+        .FirstOrDefault(entries => entries.EntryId == id);
+      return View(thisEntry);
+    }
 
-    // public ActionResult Edit(int id)
-    // {
-    //   var thisEntry = _db.Entries.FirstOrDefault(entries => entries.EntryId == id);
-    //   ViewBag.CategoryId = new SelectList(_db.Categories, "CategoryId", "Name");
-    //   return View(thisEntry);
-    // }
+    public ActionResult Edit(int id)
+    {
+      var thisEntry = _db.Entries.FirstOrDefault(entries => entries.EntryId == id);
+      ViewBag.IssueId = new SelectList(_db.Issues, "IssueId", "Prompt");
+      return View(thisEntry);
+    }
 
-    // [HttpPost]
-    // public ActionResult Edit(Entry entry, int CategoryId)
-    // {
-    //   if (CategoryId != 0)
-    //   {
-    //     _db.CategoryEntries.Add(new CategoryEntry() { CategoryId = CategoryId, EntryId = entry.EntryId });
-    //   }
-    //   _db.Entry(entry).State = EntityState.Modified;
-    //   _db.SaveChanges();
-    //   return RedirectToAction("Index");
-    // }
+    [HttpPost]
+    public ActionResult Edit(Entry entry)
+    {
+      _db.Entry(entry).State = EntityState.Modified;
+      _db.SaveChanges();
+      return RedirectToAction("Index");
+    }
 
-    // public ActionResult AddCategory(int id)
-    // {
-    //   var thisEntry = _db.Entries.FirstOrDefault(entries => entries.EntryId == id);
-    //   ViewBag.CategoryId = new SelectList(_db.Categories, "CategoryId", "Name");
-    //   return View(thisEntry);
-    // }
+    public ActionResult Delete(int id)
+    {
+      var thisEntry = _db.Entries.FirstOrDefault(entries => entries.EntryId == id);
+      return View(thisEntry);
+    }
 
-    // [HttpPost]
-    // public ActionResult AddCategory(Entry entry, int CategoryId)
-    // {
-    //   if (CategoryId != 0)
-    //   {
-    //     _db.CategoryEntries.Add(new CategoryEntry() { CategoryId = CategoryId, EntryId = entry.EntryId });
-    //   }
-    //   _db.SaveChanges();
-    //   return RedirectToAction("Index");
-    // }
-
-    // [HttpPost]
-    // public ActionResult DeleteCategory(int joinId)
-    // {
-    //   var joinEntry = _db.CategoryEntries.FirstOrDefault(entry => entry.CategoryEntryId == joinId);
-    //   _db.CategoryEntries.Remove(joinEntry);
-    //   _db.SaveChanges();
-    //   return RedirectToAction("Index");
-    // }
-
-    // public ActionResult Delete(int id)
-    // {
-    //   var thisEntry = _db.Entries.FirstOrDefault(entries => entries.EntryId == id);
-    //   return View(thisEntry);
-    // }
-
-    // [HttpPost, ActionName("Delete")]
-    // public ActionResult DeleteConfirmed(int id)
-    // {
-    //   var thisEntry = _db.Entries.FirstOrDefault(entries => entries.EntryId == id);
-    //   _db.Entries.Remove(thisEntry);
-    //   _db.SaveChanges();
-    //   return RedirectToAction("Index");
-    // }
-
+    [HttpPost, ActionName("Delete")]
+    public ActionResult DeleteConfirmed(int id)
+    {
+      var thisEntry = _db.Entries.FirstOrDefault(entries => entries.EntryId == id);
+      _db.Entries.Remove(thisEntry);
+      _db.SaveChanges();
+      return RedirectToAction("Index");
+    }
   }
 }

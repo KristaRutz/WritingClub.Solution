@@ -1,23 +1,28 @@
-@* @{
+@{
   Layout = "_Layout";
 }
 
-@model WritersClub.Models.Item
+@model WritersClub.Models.Entry
 
 <h2>Edit</h2>
 
-<h4>Edit this task: @Html.DisplayFor(model => model.Description)</h4>
+<h4>Edit this journal entry: @Html.DisplayFor(model => model.Title)</h4>
 
 @using (Html.BeginForm())
 {
-    @Html.HiddenFor(model => model.ItemId)
+    @Html.HiddenFor(model => model.EntryId)
 
-    @Html.LabelFor(model => model.Description)
-    @Html.EditorFor(model => model.Description)
+    @Html.HiddenFor(model => model.Timestamp)
+
+    @Html.LabelFor(model => model.Title)
+    @Html.EditorFor(model => model.Title)
+
+    @Html.LabelFor(model => model.Content)
+    @Html.TextAreaFor(model => model.Content)
     
-    @Html.Label("Select Category")
-    @Html.DropDownList("CategoryId")
+    @Html.Label("Select Issue")
+    @Html.DropDownList("IssueId")
     
-    <input type="submit" value="Save" />
+    <input class="btn btn-default" type="submit" value="Save" />
 }
-<p>@Html.ActionLink("Back to list", "Index")</p> *@
+<p>@Html.ActionLink("Cancel", "Index")</p>
