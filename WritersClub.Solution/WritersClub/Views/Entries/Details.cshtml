@@ -1,35 +1,26 @@
-@* @{
+  @{
     Layout = "_Layout";
 }
 
-@model WritersClub.Models.Item
+@using System.Security.Claims
+@using WritersClub.Models
+@model WritersClub.Models.Entry
 
-<h2>Item Details</h2>
+<h2>Entry Details</h2>
+
 <hr />
-<h3>@Html.DisplayNameFor(model => model.Description): @Html.DisplayFor(model => model.Description)<h3>
-    @* DisplayNameFor() displays property name while DisplayFor() displays the value of that property. *@
-@* 
-@if(@Model.Categories.Count == 0)
-{
-  <p>This item does not belong to any categories</p>
-}
-else
-{
-  <h4>Categories the item belongs to:</h4>
-  <ul>
-    @foreach (var join in Model.Categories)
-    {
-      <li>@join.Category.Name</li>
-      @using (Html.BeginForm("DeleteCategory", "Items"))
-      {
-        @Html.Hidden("joinId", @join.CategoryItemId)
-        <input type="submit" value="Delete"/>
-      }
-    }
-  </ul>
-}
 
-<p>@Html.ActionLink("Back to list", "Index")</p>
-<p>@Html.ActionLink("Add a Category", "AddCategory", new { id = Model.ItemId })</p>
-<p>@Html.ActionLink("Edit Item", "Edit", new { id = Model.ItemId })</p>
-<p>@Html.ActionLink("Delete Item", "Delete", new { id = Model.ItemId })</p> *@ 
+<h4>@Html.DisplayNameFor(model => model.Issue.Prompt): @Html.DisplayFor(model => model.Issue.Prompt)</h4>
+
+<hr>
+
+<h5>Issue No. @Html.DisplayFor(model => model.IssueId)</h5> 
+<h3>@Html.DisplayFor(model => model.Title)</h3>
+<h5>By @Html.DisplayFor(model => model.User.UserName) on @Html.DisplayFor(model => model.Timestamp)</h5> 
+<p>@Html.DisplayFor(model => model.Content)</p>
+
+<hr>
+
+<p>@Html.ActionLink("Back to list of user's entries", "Index")</p>
+<p>@Html.ActionLink("Edit Entry", "Edit", new { id = Model.EntryId })</p>
+<p>@Html.ActionLink("Delete Entry", "Delete", new { id = Model.EntryId })</p> 
