@@ -1,0 +1,26 @@
+@{
+    Layout = "_Layout";
+}
+
+@using WritersClub.Models;
+@model WritersClub.Models.Journal;
+
+<h2>Journal @Html.DisplayFor(model => model.JournalId) Details</h2>
+<hr />
+<h3>@Html.DisplayNameFor(model => model.JournalName): @Html.DisplayFor(model => model.JournalName)</h3>
+
+<ul>
+    @if (@Model.Issues.Count == 0)
+    {
+        <p>no issues yet</p>
+    }
+
+    @foreach (var issue in @Model.Issues)
+    {
+        <li>@Html.ActionLink($"{issue.Prompt}", "Details", "Issues", new { id = issue.IssueId })</li>
+    }
+</ul>
+
+<p>@Html.ActionLink("Back to list of Journals", "Index")</p>
+<p>@Html.ActionLink("Edit Journal", "Edit", new { id = Model.JournalId })</p>
+<p>@Html.ActionLink("Delete Journal", "Delete", new { id = Model.JournalId })</p>

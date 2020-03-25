@@ -1,15 +1,18 @@
-@* @{
+@{
   Layout = "_Layout";
 }
 
-@model WritersClub.Models.Category
+@model WritersClub.Models.Issue
 
-<h4>Add a new task</h4>
+<h4>Add a new Issue</h4>
 @using (Html.BeginForm())
 {
-  @Html.LabelFor(model => model.Name)
-  @Html.TextBoxFor(model => model.Name)
+  @Html.LabelFor(model => model.Prompt)
+  @Html.TextAreaFor(model => model.Prompt)
 
-  <input type="submit" value="Add new category of task" />
+  @Html.LabelFor(model => model.JournalId)
+  @Html.DropDownList("JournalId")
+
+  <input type="submit" value="Create new issue" />
 }
-<p>@Html.ActionLink("Show all categories", "Index")</p> *@
+<p>@Html.ActionLink("Back to Issues", "Index")</p>

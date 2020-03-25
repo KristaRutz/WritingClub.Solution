@@ -1,0 +1,18 @@
+@{
+  Layout = "_Layout";
+}
+
+@model WritersClub.Models.Journal
+
+<h4>Add a new Journal</h4>
+@using (Html.BeginForm())
+{
+  @Html.LabelFor(model => model.JournalName)
+  @Html.TextAreaFor(model => model.JournalName)
+
+  @Html.LabelFor(model => model.JournalId)
+  @Html.DropDownList("JournalId")
+
+  <input type="submit" value="Create new journal" />
+}
+<p>@Html.ActionLink("Back to Journals", "Index")</p>

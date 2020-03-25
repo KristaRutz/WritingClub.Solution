@@ -1,0 +1,18 @@
+@{
+  Layout = "_Layout";
+}
+
+@using WritersClub.Models;
+@model List<WritersClub.Models.Journal>;
+
+<h1>Journals</h1>
+
+<ul>
+  @foreach(Journal journal in Model)
+  {
+      <li>@Html.ActionLink($"{journal.JournalName}", "Details", new { id = journal.JournalId })</li>
+  }
+</ul>
+
+<p>@Html.ActionLink("Add new journal", "Create")</p>
+<p>@Html.ActionLink("Home", "Index", "Home")</p>

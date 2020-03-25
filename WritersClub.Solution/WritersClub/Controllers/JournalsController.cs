@@ -10,19 +10,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace WritersClub.Controllers
 {
-  public class IssuesController : Controller
+  public class JournalsController : Controller
   {
 
     private readonly WritersClubContext _db;
 
-    public IssuesController(WritersClubContext db)
+    public JournalsController(WritersClubContext db)
     {
       _db = db;
     }
 
     public ActionResult Index()
     {
-      List<Issue> model = _db.Issues.ToList();
+      List<Journal> model = _db.Journals.ToList();
       return View(model);
     }
 
@@ -33,48 +33,48 @@ namespace WritersClub.Controllers
     }
 
     [HttpPost]
-    public ActionResult Create(Issue issue)
+    public ActionResult Create(Journal journal)
     {
-      _db.Issues.Add(issue);
+      _db.Journals.Add(journal);
       _db.SaveChanges();
       return RedirectToAction("Index");
     }
 
     public ActionResult Details(int id)
     {
-      Issue thisIssue = _db.Issues
-        .Include(issue => issue.Entries)
-        .Include(issue => issue.Journal)
-        .FirstOrDefault(issue => issue.IssueId == id);
-      // thisIssue.Items = _db.Items.Where(item => item.IssueId == id).ToList();
-      return View(thisIssue);
+      Journal thisJournal = _db.Journals
+        .Include(journal => journal.Issues)
+        .Include(journal => journal.Journal)
+        .FirstOrDefault(journal => journal.JournalId == id);
+      // thisJournal.Items = _db.Items.Where(item => item.JournalId == id).ToList();
+      return View(thisJournal);
     }
 
     public ActionResult Edit(int id)
     {
-      var thisIssue = _db.Issues.FirstOrDefault(issues => issues.IssueId == id);
-      return View(thisIssue);
+      var thisJournal = _db.Journals.FirstOrDefault(journals => journals.JournalId == id);
+      return View(thisJournal);
     }
 
     [HttpPost]
-    public ActionResult Edit(Issue issue)
+    public ActionResult Edit(Journal journal)
     {
-      _db.Entry(issue).State = EntityState.Modified;
+      _db.Issue(journal).State = EntityState.Modified;
       _db.SaveChanges();
       return RedirectToAction("Index");
     }
 
     public ActionResult Delete(int id)
     {
-      var thisIssue = _db.Issues.FirstOrDefault(issues => issues.IssueId == id);
-      return View(thisIssue);
+      var thisJournal = _db.Journals.FirstOrDefault(journals => journals.JournalId == id);
+      return View(thisJournal);
     }
 
     [HttpPost, ActionName("Delete")]
     public ActionResult DeleteConfirmed(int id)
     {
-      var thisIssue = _db.Issues.FirstOrDefault(issues => issues.IssueId == id);
-      _db.Issues.Remove(thisIssue);
+      var thisJournal = _db.Journals.FirstOrDefault(journals => journals.JournalId == id);
+      _db.Journals.Remove(thisJournal);
       _db.SaveChanges();
       return RedirectToAction("Index");
     }
