@@ -2,18 +2,22 @@
   Layout = "_Layout";
 }
 
-@model WritersClub.Models.Item
+@model WritersClub.Models.Entry
 
-<h4>Add a new task</h4>
+<h4>Create New Entry</h4>
 @using (Html.BeginForm())
 {
-  @Html.LabelFor(model => model.Description)
-  @Html.TextBoxFor(model => model.Description)
+  @Html.LabelFor(model => model.Title)
+  @Html.TextBoxFor(model => model.Title)
 
+  @Html.LabelFor(model => model.Content)
+  @Html.TextAreaFor(model => model.Content)
 
-  @Html.Label("Select category")
-  @Html.DropDownList("CategoryId")
-  <input type="submit" value="Add new task" class="btn btn-default"/>
+  <input type="hidden" value="@DateTime.Now" name="Timestamp">
+
+  @Html.Label("Select Prompt")
+  @Html.DropDownList("IssueId")
+  <input type="submit" value="Add this entry" class="btn btn-default"/>
 }
-<p>@Html.ActionLink("Show all items", "Index")</p>
+<p class="btn btn-default">@Html.ActionLink("Back", "Index")</p>
 

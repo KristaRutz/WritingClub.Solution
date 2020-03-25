@@ -12,12 +12,12 @@ using System.Security.Claims;
 namespace WritersClub.Controllers
 {
   [Authorize]
-  public class ItemsController : Controller
+  public class EntriesController : Controller
   {
     private readonly WritersClubContext _db;
     private readonly UserManager<ApplicationUser> _userManager;
 
-    public ItemsController(UserManager<ApplicationUser> userManager, WritersClubContext db)
+    public EntriesController(UserManager<ApplicationUser> userManager, WritersClubContext db)
     {
       _userManager = userManager;
       _db = db;
@@ -27,74 +27,75 @@ namespace WritersClub.Controllers
     {
       var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
       var currentUser = await _userManager.FindByIdAsync(userId);
-      var userItems = _db.Items.Where(entry => entry.User.Id == currentUser.Id);
-      return View(userItems);
+      var userEntries = _db.Entries.Where(entry => entry.User.Id == currentUser.Id);
+      return View(userEntries);
     }
+
+    // public ActionResult Index()
+    // {
+    //   return View(_db.Entries.ToList());
+    // }
 
     public ActionResult Create()
     {
-      ViewBag.CategoryId = new SelectList(_db.Categories, "CategoryId", "Name");
+      ViewBag.IssueId = new SelectList(_db.Issues, "IssueId", "Name");
       return View();
     }
 
     [HttpPost]
-    public async Task<ActionResult> Create(Item item, int CategoryId)
+    public async Task<ActionResult> Create(Entry entry)
     {
       var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
       var currentUser = await _userManager.FindByIdAsync(userId);
-      item.User = currentUser;
-
-      _db.Items.Add(item);
-      if (CategoryId != 0)
-      {
-        _db.CategoryItems.Add(new CategoryItem() { CategoryId = CategoryId, ItemId = item.ItemId });
-      }
+      entry.User = currentUser;
+      _db.Entries.Add(entry);
       _db.SaveChanges();
+
       return RedirectToAction("Index");
     }
 
     // public ActionResult Details(int id)
     // {
-    //   Item thisItem = _db.Items
-    //     .Include(item => item.Categories)
+    //   Entry thisEntry = _db.Entries
+    //     .Include(entry => entry.Categories)
     //     .ThenInclude(join => join.Category)
-    //     .FirstOrDefault(items => items.ItemId == id);
-    //   // FirstOrDefault() uses a lambda. We can read this as: start by looking at db.Items (our items table), then find any items where the ItemId of an item is equal to the id we've passed into this method.
-    //   return View(thisItem);
+    //     .FirstOrDefault(entries => entries.EntryId == id);
+    //   // FirstOrDefault() uses a lambda. We can read this as: start by looking at db.Entries (our entries table), then find any entries where the EntryId of an entry is equal to the id we've passed into this method.
+    //   return View(thisEntry);
     // }
 
     // public ActionResult Edit(int id)
     // {
-    //   var thisItem = _db.Items.FirstOrDefault(items => items.ItemId == id);
+    //   var thisEntry = _db.Entries.FirstOrDefault(entries => entries.EntryId == id);
     //   ViewBag.CategoryId = new SelectList(_db.Categories, "CategoryId", "Name");
-    //   return View(thisItem);
+    //   return View(thisEntry);
     // }
 
     // [HttpPost]
-    // public ActionResult Edit(Item item, int CategoryId)
+    // public ActionResult Edit(Entry entry, int CategoryId)
     // {
     //   if (CategoryId != 0)
     //   {
-    //     _db.CategoryItems.Add(new CategoryItem() { CategoryId = CategoryId, ItemId = item.ItemId });
+    //     _db.CategoryEntries.Add(new CategoryEntry() { CategoryId = CategoryId, EntryId = entry.EntryId });
     //   }
-    //   _db.Entry(item).State = EntityState.Modified;
+    //   _db.Entry(entry).State = EntityState.Modified;
     //   _db.SaveChanges();
     //   return RedirectToAction("Index");
     // }
 
     // public ActionResult AddCategory(int id)
     // {
-    //   var thisItem = _db.Items.FirstOrDefault(items => items.ItemId == id);
+    //   var thisEntry = _db.Entries.FirstOrDefault(entries => entries.EntryId == id);
     //   ViewBag.CategoryId = new SelectList(_db.Categories, "CategoryId", "Name");
-    //   return View(thisItem);
+    //   return View(thisEntry);
     // }
 
     // [HttpPost]
-    // public ActionResult AddCategory(Item item, int CategoryId)
+    // public ActionResult AddCategory(Entry entry, int CategoryId)
     // {
     //   if (CategoryId != 0)
     //   {
-    //     _db.CategoryItems.Add(new CategoryItem() { CategoryId = CategoryId, ItemId = item.ItemId });
+    //     _db.CategoryEntries.Add(new CategoryEntry() { CategoryId = CategoryId, EntryId = entry.EntryId });
     //   }
     //   _db.SaveChanges();
     //   return RedirectToAction("Index");
@@ -103,23 +104,23 @@ namespace WritersClub.Controllers
     // [HttpPost]
     // public ActionResult DeleteCategory(int joinId)
     // {
-    //   var joinEntry = _db.CategoryItems.FirstOrDefault(entry => entry.CategoryItemId == joinId);
-    //   _db.CategoryItems.Remove(joinEntry);
+    //   var joinEntry = _db.CategoryEntries.FirstOrDefault(entry => entry.CategoryEntryId == joinId);
+    //   _db.CategoryEntries.Remove(joinEntry);
     //   _db.SaveChanges();
     //   return RedirectToAction("Index");
     // }
 
     // public ActionResult Delete(int id)
     // {
-    //   var thisItem = _db.Items.FirstOrDefault(items => items.ItemId == id);
-    //   return View(thisItem);
+    //   var thisEntry = _db.Entries.FirstOrDefault(entries => entries.EntryId == id);
+    //   return View(thisEntry);
     // }
 
     // [HttpPost, ActionName("Delete")]
     // public ActionResult DeleteConfirmed(int id)
     // {
-    //   var thisItem = _db.Items.FirstOrDefault(items => items.ItemId == id);
-    //   _db.Items.Remove(thisItem);
+    //   var thisEntry = _db.Entries.FirstOrDefault(entries => entries.EntryId == id);
+    //   _db.Entries.Remove(thisEntry);
     //   _db.SaveChanges();
     //   return RedirectToAction("Index");
     // }

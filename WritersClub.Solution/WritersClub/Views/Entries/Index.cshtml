@@ -1,25 +1,45 @@
-@* @{
+@{
   Layout = "_Layout";
 }
 
 @using WritersClub.Models;
-@model IEnumerable<WritersClub.Models.Item>;
+@model IEnumerable<WritersClub.Models.Entry>;
 
-<h1>Items for @User.Identity.Name</h1>
+<h1>Entries for @User.Identity.Name</h1>
+<h1>Entries Index</h1>
 
 @if (@Model.Any())
 {
   <ul>
-    @foreach(Item item in Model)
+    @foreach(Entry entry in Model)
     {
-        <li>@Html.ActionLink($"{item.Description}", "Details", new { id = item.ItemId })</li>
+        <li>@Html.ActionLink($"{entry.Title}", "Details", new { id = entry.EntryId })</li>
     }
   </ul>
 } 
 else
 {
-  <h3>No items have been added yet!</h3>
+  <h3>No entries have been added yet!</h3>
 }
 
-<p>@Html.ActionLink("Add new item", "Create")</p>
-<p>@Html.ActionLink("Home", "Index", "Home")</p> *@
+<p>@Html.ActionLink("Add new entry", "Create")</p>
+<p>@Html.ActionLink("Home", "Index", "Home")</p>
+
+----------------------------------------------------------------
+
+@* @using ToDoList.Models;
+@model List<ToDoList.Models.Item>;
+
+<h1>Items</h1>
+
+@if (@Model.Count == 0)
+{
+  <h3>No Entries have been added yet!</h3>
+} 
+
+<ul>
+  @foreach(Item item in Model)
+  {
+      <li>@Html.ActionLink($"{item.Description}", "Details", new { id = item.ItemId }) | @item.Category.Name</li>
+  }
+</ul> *@

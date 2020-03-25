@@ -11,7 +11,7 @@ namespace WritersClub.Models
       this.ApplicationUsers = new HashSet<ApplicationUserClub>();
     }
 
-    public int ClubName { get; set; }
+    public string ClubName { get; set; }
     public int ClubId { get; set; }
 
     public ICollection<Journal> Journals { get; set; }

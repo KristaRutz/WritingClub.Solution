@@ -5,6 +5,7 @@ namespace WritersClub.Models
 {
   public class Entry
   {
+    public string Title { get; set; }
     public int EntryId { get; set; }
     public int IssueId { get; set; }
     public virtual Issue Issue { get; set; }
