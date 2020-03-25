@@ -18,9 +18,9 @@
 <h3>@Html.DisplayFor(model => model.Title)</h3>
 <h5>By @Html.DisplayFor(model => model.User.UserName) on @Html.DisplayFor(model => model.Timestamp)</h5> 
 <p>@Html.DisplayFor(model => model.Content)</p>
-
 <hr>
 
-<p>@Html.ActionLink("Back to list of user's entries", "Index")</p>
+<p>@Html.ActionLink("See more of user's entries", "Index")</p>
+<p>@Html.ActionLink("See more of this issue's details", "Details", "Issues", new { id = Model.Issue.IssueId})</p>
 <p>@Html.ActionLink("Edit Entry", "Edit", new { id = Model.EntryId })</p>
 <p>@Html.ActionLink("Delete Entry", "Delete", new { id = Model.EntryId })</p> 

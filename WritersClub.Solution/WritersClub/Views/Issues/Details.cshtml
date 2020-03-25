@@ -5,22 +5,22 @@
 @using WritersClub.Models;
 @model WritersClub.Models.Issue;
 
-<h2>Issue Details</h2>
+<h2>Issue @Html.DisplayFor(model => model.IssueId) Details</h2>
 <hr />
-<h3>@Html.DisplayNameFor(model => model.Prompt): @Html.DisplayFor(model => model.Prompt)<h3>
+<h3>@Html.DisplayNameFor(model => model.Prompt): @Html.DisplayFor(model => model.Prompt)</h3>
 
 <ul>
-    @if (@Model.Items.Count == 0)
+    @if (@Model.Entries.Count == 0)
     {
-        <p>no items found</p>
+        <p>no entries yet</p>
     }
 
-    @foreach (var join in @Model.Items)
+    @foreach (var entry in @Model.Entries)
     {
-        <li>@join.Item.Description</li>
+        <li>@Html.ActionLink($"{entry.Title}", "Details", "Entries", new { id = entry.EntryId })</li>
     }
 </ul>
 
-<p>@Html.ActionLink("Back to list", "Index")</p>
-<p>@Html.ActionLink("Edit Category", "Edit", new { id = Model.CategoryId })</p>
-<p>@Html.ActionLink("Delete Category", "Delete", new { id = Model.CategoryId })</p>
+<p>@Html.ActionLink("Back to list of Issues", "Index")</p>
+<p>@Html.ActionLink("Edit Issue", "Edit", new { id = Model.IssueId })</p>
+<p>@Html.ActionLink("Delete Issue", "Delete", new { id = Model.IssueId })</p>

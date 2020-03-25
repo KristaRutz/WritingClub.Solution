@@ -36,43 +36,43 @@ namespace WritersClub.Controllers
       return RedirectToAction("Index");
     }
 
-    //     public ActionResult Details(int id)
-    //     {
-    //       Issue thisIssue = _db.Issues
-    //         .Include(issue => issue.Items)
-    //         .ThenInclude(join => join.Item)
-    //         .FirstOrDefault(issue => issue.IssueId == id);    
-    //       // thisIssue.Items = _db.Items.Where(item => item.IssueId == id).ToList();
-    //       return View(thisIssue);
-    //     }
+    public ActionResult Details(int id)
+    {
+      Issue thisIssue = _db.Issues
+        .Include(issue => issue.Entries)
+        .Include(issue => issue.Journal)
+        .FirstOrDefault(issue => issue.IssueId == id);
+      // thisIssue.Items = _db.Items.Where(item => item.IssueId == id).ToList();
+      return View(thisIssue);
+    }
 
-    //     public ActionResult Edit(int id)
-    //     {
-    //       var thisIssue = _db.Issues.FirstOrDefault(issues => issues.IssueId == id);
-    //       return View(thisIssue);
-    //     }
+    public ActionResult Edit(int id)
+    {
+      var thisIssue = _db.Issues.FirstOrDefault(issues => issues.IssueId == id);
+      return View(thisIssue);
+    }
 
-    //     [HttpPost]
-    //     public ActionResult Edit(Issue issue)
-    //     {
-    //       _db.Entry(issue).State = EntityState.Modified;
-    //       _db.SaveChanges();
-    //       return RedirectToAction("Index");
-    //     }
+    [HttpPost]
+    public ActionResult Edit(Issue issue)
+    {
+      _db.Entry(issue).State = EntityState.Modified;
+      _db.SaveChanges();
+      return RedirectToAction("Index");
+    }
 
-    //     public ActionResult Delete(int id)
-    //     {
-    //       var thisIssue = _db.Issues.FirstOrDefault(issues => issues.IssueId == id);
-    //       return View(thisIssue);
-    //     }
+    public ActionResult Delete(int id)
+    {
+      var thisIssue = _db.Issues.FirstOrDefault(issues => issues.IssueId == id);
+      return View(thisIssue);
+    }
 
-    //     [HttpPost, ActionName("Delete")]
-    //     public ActionResult DeleteConfirmed(int id)
-    //     {
-    //       var thisIssue = _db.Issues.FirstOrDefault(issues => issues.IssueId == id);
-    //       _db.Issues.Remove(thisIssue);
-    //       _db.SaveChanges();
-    //       return RedirectToAction("Index");
-    //     }
+    [HttpPost, ActionName("Delete")]
+    public ActionResult DeleteConfirmed(int id)
+    {
+      var thisIssue = _db.Issues.FirstOrDefault(issues => issues.IssueId == id);
+      _db.Issues.Remove(thisIssue);
+      _db.SaveChanges();
+      return RedirectToAction("Index");
+    }
   }
 }
