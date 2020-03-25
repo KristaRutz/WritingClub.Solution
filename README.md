@@ -2,6 +2,14 @@
 
 ## By Krista Rutz and Steven Fleming
 
+WFH Summary 3/25:
+
+- Made complete models and database migrations
+- Made controllers for user, entry, issue, and journal classes
+- Include views for these controllers
+
+> ---
+
 - Writers Club
 
 - Users
