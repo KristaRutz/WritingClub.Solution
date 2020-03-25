@@ -20,6 +20,7 @@
   @Html.PasswordFor(user => user.ConfirmPassword)
 
   <input type="submit" value="Register" />
-<p>@Html.ActionLink("See all items", "Index", "Items")</p>
-<p>@Html.ActionLink("See all categories", "Index", "Categories")</p>
+  <p class="btn btn-default">@Html.ActionLink("Back to Home", "Index", "Home")</p>
+@* <p>@Html.ActionLink("See all items", "Index", "Items")</p>
+<p>@Html.ActionLink("See all categories", "Index", "Categories")</p> *@
 }
