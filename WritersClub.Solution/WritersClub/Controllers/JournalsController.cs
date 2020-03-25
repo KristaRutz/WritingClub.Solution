@@ -2,11 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using WritersClub.Models;
 using System.Collections.Generic;
 using System.Linq;
-using System;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.Rendering;
-
 
 namespace WritersClub.Controllers
 {
@@ -28,7 +25,7 @@ namespace WritersClub.Controllers
 
     public ActionResult Create()
     {
-      ViewBag.JournalId = new SelectList(_db.Journals, "JournalId", "JournalName");
+      ViewBag.ClubId = new SelectList(_db.Club, "ClubId", "ClubName");
       return View();
     }
 
@@ -44,7 +41,7 @@ namespace WritersClub.Controllers
     {
       Journal thisJournal = _db.Journals
         .Include(journal => journal.Issues)
-        .Include(journal => journal.Journal)
+        .Include(journal => journal.Club)
         .FirstOrDefault(journal => journal.JournalId == id);
       // thisJournal.Items = _db.Items.Where(item => item.JournalId == id).ToList();
       return View(thisJournal);
@@ -53,13 +50,16 @@ namespace WritersClub.Controllers
     public ActionResult Edit(int id)
     {
       var thisJournal = _db.Journals.FirstOrDefault(journals => journals.JournalId == id);
+      ViewBag.ClubId = new SelectList(_db.Club, "ClubId", "ClubName");
       return View(thisJournal);
     }
 
     [HttpPost]
     public ActionResult Edit(Journal journal)
     {
-      _db.Issue(journal).State = EntityState.Modified;
+      // fix this!!
+      // _db.Entry(issue).State = EntityState.Modified;
+      // _db.Journal(journal).State = EntityState.Modified;
       _db.SaveChanges();
       return RedirectToAction("Index");
     }

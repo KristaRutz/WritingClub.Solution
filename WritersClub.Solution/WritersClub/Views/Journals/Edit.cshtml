@@ -2,20 +2,20 @@
   Layout = "_Layout";
 }
 
-@model WritersClub.Models.Issue
+@model WritersClub.Models.Journal
 
 <h2>Edit</h2>
 
-<h4>Edit the Prompt: @Html.DisplayFor(model => model.Prompt)</h4>
+<h4>Edit the Journal Name: @Html.DisplayFor(model => model.JournalName)</h4>
 
 @using (Html.BeginForm())
 {
-    @Html.HiddenFor(model => model.IssueId)
-
     @Html.HiddenFor(model => model.JournalId)
 
-    @Html.LabelFor(model => model.Prompt)
-    @Html.TextAreaFor(model => model.Prompt)
+    @Html.HiddenFor(model => model.ClubId)
+
+    @Html.LabelFor(model => model.JournalName)
+    @Html.TextAreaFor(model => model.JournalName)
 
     <input type="submit" value="Save" />
 }
