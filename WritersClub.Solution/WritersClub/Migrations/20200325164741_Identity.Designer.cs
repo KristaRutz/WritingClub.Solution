@@ -9,8 +9,8 @@ using WritersClub.Models;
 namespace ToDoList.Migrations
 {
     [DbContext(typeof(WritersClubContext))]
-    [Migration("20200324234957_addIdentity")]
-    partial class addIdentity
+    [Migration("20200325164741_Identity")]
+    partial class Identity
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -176,6 +176,94 @@ namespace ToDoList.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("WritersClub.Models.ApplicationUserClub", b =>
+                {
+                    b.Property<int>("ApplicationUserClubId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("ApplicationUserId");
+
+                    b.Property<string>("ApplicationUserId1");
+
+                    b.Property<int>("ClubId");
+
+                    b.HasKey("ApplicationUserClubId");
+
+                    b.HasIndex("ApplicationUserId1");
+
+                    b.HasIndex("ClubId");
+
+                    b.ToTable("ClubMember");
+                });
+
+            modelBuilder.Entity("WritersClub.Models.Club", b =>
+                {
+                    b.Property<int>("ClubId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("ClubName");
+
+                    b.HasKey("ClubId");
+
+                    b.ToTable("Club");
+                });
+
+            modelBuilder.Entity("WritersClub.Models.Entry", b =>
+                {
+                    b.Property<int>("EntryId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Content");
+
+                    b.Property<int>("IssueId");
+
+                    b.Property<DateTime>("Timestamp");
+
+                    b.Property<int>("UserId");
+
+                    b.Property<string>("UserId1");
+
+                    b.HasKey("EntryId");
+
+                    b.HasIndex("IssueId");
+
+                    b.HasIndex("UserId1");
+
+                    b.ToTable("Entries");
+                });
+
+            modelBuilder.Entity("WritersClub.Models.Issue", b =>
+                {
+                    b.Property<int>("IssueId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("JournalId");
+
+                    b.Property<string>("Prompt");
+
+                    b.HasKey("IssueId");
+
+                    b.HasIndex("JournalId");
+
+                    b.ToTable("Issues");
+                });
+
+            modelBuilder.Entity("WritersClub.Models.Journal", b =>
+                {
+                    b.Property<int>("JournalId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("ClubId");
+
+                    b.Property<string>("JournalName");
+
+                    b.HasKey("JournalId");
+
+                    b.HasIndex("ClubId");
+
+                    b.ToTable("Journals");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole")
@@ -218,6 +306,46 @@ namespace ToDoList.Migrations
                     b.HasOne("WritersClub.Models.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("WritersClub.Models.ApplicationUserClub", b =>
+                {
+                    b.HasOne("WritersClub.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany("Clubs")
+                        .HasForeignKey("ApplicationUserId1");
+
+                    b.HasOne("WritersClub.Models.Club", "Club")
+                        .WithMany("ApplicationUsers")
+                        .HasForeignKey("ClubId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("WritersClub.Models.Entry", b =>
+                {
+                    b.HasOne("WritersClub.Models.Issue", "Issue")
+                        .WithMany("Entries")
+                        .HasForeignKey("IssueId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("WritersClub.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId1");
+                });
+
+            modelBuilder.Entity("WritersClub.Models.Issue", b =>
+                {
+                    b.HasOne("WritersClub.Models.Journal", "Journal")
+                        .WithMany("Issues")
+                        .HasForeignKey("JournalId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("WritersClub.Models.Journal", b =>
+                {
+                    b.HasOne("WritersClub.Models.Club", "Club")
+                        .WithMany("Journals")
+                        .HasForeignKey("ClubId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

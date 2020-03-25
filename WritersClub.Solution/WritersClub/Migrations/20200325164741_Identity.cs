@@ -2,7 +2,7 @@
 
 namespace ToDoList.Migrations
 {
-    public partial class Authorizatoin : Migration
+    public partial class Identity : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

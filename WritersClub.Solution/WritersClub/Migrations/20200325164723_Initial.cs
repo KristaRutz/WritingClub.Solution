@@ -48,6 +48,19 @@ namespace ToDoList.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Club",
+                columns: table => new
+                {
+                    ClubId = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    ClubName = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Club", x => x.ClubId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -153,6 +166,102 @@ namespace ToDoList.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "ClubMember",
+                columns: table => new
+                {
+                    ApplicationUserClubId = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    ClubId = table.Column<int>(nullable: false),
+                    ApplicationUserId = table.Column<int>(nullable: false),
+                    ApplicationUserId1 = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ClubMember", x => x.ApplicationUserClubId);
+                    table.ForeignKey(
+                        name: "FK_ClubMember_AspNetUsers_ApplicationUserId1",
+                        column: x => x.ApplicationUserId1,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ClubMember_Club_ClubId",
+                        column: x => x.ClubId,
+                        principalTable: "Club",
+                        principalColumn: "ClubId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Journals",
+                columns: table => new
+                {
+                    JournalId = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    JournalName = table.Column<string>(nullable: true),
+                    ClubId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Journals", x => x.JournalId);
+                    table.ForeignKey(
+                        name: "FK_Journals_Club_ClubId",
+                        column: x => x.ClubId,
+                        principalTable: "Club",
+                        principalColumn: "ClubId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Issues",
+                columns: table => new
+                {
+                    IssueId = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Prompt = table.Column<string>(nullable: true),
+                    JournalId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Issues", x => x.IssueId);
+                    table.ForeignKey(
+                        name: "FK_Issues_Journals_JournalId",
+                        column: x => x.JournalId,
+                        principalTable: "Journals",
+                        principalColumn: "JournalId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Entries",
+                columns: table => new
+                {
+                    EntryId = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    IssueId = table.Column<int>(nullable: false),
+                    Content = table.Column<string>(nullable: true),
+                    Timestamp = table.Column<DateTime>(nullable: false),
+                    UserId = table.Column<int>(nullable: false),
+                    UserId1 = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Entries", x => x.EntryId);
+                    table.ForeignKey(
+                        name: "FK_Entries_Issues_IssueId",
+                        column: x => x.IssueId,
+                        principalTable: "Issues",
+                        principalColumn: "IssueId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Entries_AspNetUsers_UserId1",
+                        column: x => x.UserId1,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -189,6 +298,36 @@ namespace ToDoList.Migrations
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ClubMember_ApplicationUserId1",
+                table: "ClubMember",
+                column: "ApplicationUserId1");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ClubMember_ClubId",
+                table: "ClubMember",
+                column: "ClubId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Entries_IssueId",
+                table: "Entries",
+                column: "IssueId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Entries_UserId1",
+                table: "Entries",
+                column: "UserId1");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Issues_JournalId",
+                table: "Issues",
+                column: "JournalId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Journals_ClubId",
+                table: "Journals",
+                column: "ClubId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -209,10 +348,25 @@ namespace ToDoList.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "ClubMember");
+
+            migrationBuilder.DropTable(
+                name: "Entries");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
+                name: "Issues");
+
+            migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Journals");
+
+            migrationBuilder.DropTable(
+                name: "Club");
         }
     }
 }
